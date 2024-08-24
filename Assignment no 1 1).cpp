@@ -1,51 +1,50 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
-class zero
+
+class Count
 {
-public :
-int check(int p,int n);
-void find(int n);
+public:
+    int first(int a[], int low, int high);
+    int total(int a[], int n);
 };
-int zero :: check(int p, int n)
+
+int Count::first(int a[], int low, int high)
 {
-int count=0,f=5;
-while(f<=p)
+    if (low <= high)
+    {
+        int mid = (low + high) / 2;
+        if ((mid == 0 || a[mid - 1] == 1) && a[mid] == 0)
+        {
+            return mid;
+        }
+        if (a[mid] == 1)
+        {
+            return first(a, mid + 1, high);
+        }
+        else
+        {
+            return first(a, low, mid - 1);
+        }
+    }
+    return -1;
+}
+
+int Count::total(int a[], int n)
 {
-count+=p/f;
-f=f*5;
+    int f = first(a, 0, n - 1);
+    if (f == -1)
+    {
+        return 0;
+    }
+    return (n - f);
 }
-return(count>=n);
-}
-void zero :: find(int n)
-{
-int low,high,mid;
-if(n==1)
-{
-cout<<"Number : 5 "<<endl;
-return;
-}
-low=0;
-high=n*5;
-while(low<high)
-{
-mid=(low+high)/2;
-if(check(mid,n))
-{
-high=mid;
-}
-else
-{
-low=mid+1;
-}
-}
-cout<<"Number : "<<low<<endl;
-}
+
 int main()
 {
-zero z;
-int n;
-cout<<"Number of zero : ";
-cin>>n;
-z.find(n);
-return 0;
+    Count c;
+    int a[] = {1, 1, 1, 1, 0, 0, 0, 0};
+    int n = sizeof(a) / sizeof(a[0]); 
+    int t = c.total(a, n);
+    cout << t;
+    return 0;
 }
